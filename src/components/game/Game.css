@@ -1,0 +1,11 @@
+.board-container {
+  display: flex;
+  margin: 0 auto;
+  width: 13em;
+  flex-wrap: wrap;
+}
+.position {
+  border: 1px solid #000;
+  width: 4em;
+  height: 4em;
+}

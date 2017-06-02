@@ -1,0 +1,31 @@
+.screen {
+  text-align: center;
+}
+
+.main-title {
+  font-size: 3em;
+  text-align: center;
+}
+
+.button-container {
+  margin: 8em;
+}
+
+.primary {
+  color: #fff;
+  padding: 1em 3em;
+  line-height: 2em;
+  font-size: 2em;
+  background: linear-gradient(0,rgb(234,33,45),rgb(123,45,4));
+  border-radius: 2em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.copyright {
+  width: 100%;
+  position: absolute;
+  bottom: 1em;
+  font-size: 0.8em;
+}
+
