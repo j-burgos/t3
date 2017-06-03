@@ -3,11 +3,20 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
   width: 100vw;
   height: 100vh;
-
   background: #FFF4C1;
   text-align: center;
 }
 
+.button {
+  display: block;
+  background: #FF6700;
+  border-radius: 2em;
+  padding: 0.3em 3em;
+  line-height: 2em;
+  font-size: 2em;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #fff;
+}

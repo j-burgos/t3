@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom'
 
 import Home from './home/Home'
-import Game from './game/Game'
+import Board from './board/Board'
 import Outcome from './outcome/Outcome'
 
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path='/' component={Home} />
-          <Route path='/game' component={Game} />
+          <Route path='/play' component={Board} />
           <Route path='/outcome' component={Outcome} />
         </div>
       </Router>

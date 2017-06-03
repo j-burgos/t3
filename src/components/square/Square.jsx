@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './Game.css'
+import './Square.css'
 
 export default class Square extends Component {
   render () {

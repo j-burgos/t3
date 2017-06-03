@@ -12,7 +12,7 @@ export default class Home extends Component {
           <h1>Tic Tac Toe</h1>
         </div>
         <div className='button-container'>
-          <Link to='/game'>Start</Link>
+          <Link className='button' to='/play'>Play!</Link>
         </div>
         <div className='footer'>
           <p>© 2017 Jorge Burgos</p>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import Square from './Square'
+import Square from '../square/Square'
 
 import '../App.css'
-import './Game.css'
+import './Board.css'
 
 const free = 0
 const player1 = 1
@@ -32,7 +32,7 @@ const isLineWon = (size, lineScore, p1, p2) => {
   return p1Won ? p1 : p2Won ? p2 : undefined
 }
 
-export default class Game extends Component {
+export default class Board extends Component {
   constructor () {
     super()
     this.state = {
@@ -114,7 +114,6 @@ export default class Game extends Component {
     )
     return (
       <div className='screen'>
-        <h1 className='main-title'>Game</h1>
         <div className='board-container'>
           {this.state.board.map((row, y) =>
             row.map((c, x) => {
