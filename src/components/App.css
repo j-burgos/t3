@@ -1,3 +1,13 @@
 .screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  width: 100vw;
+  height: 100vh;
+
+  background: #FFF4C1;
   text-align: center;
 }
+
