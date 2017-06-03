@@ -10,13 +10,13 @@ import Game from './game/Game'
 import Outcome from './outcome/Outcome'
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <Router>
-        <div className="screen">
-          <Route exact path="/" component={Home} />
-          <Route path="/game" component={Game} />
-          <Route path="/outcome" component={Outcome} />
+        <div className='screen'>
+          <Route exact path='/' component={Home} />
+          <Route path='/game' component={Game} />
+          <Route path='/outcome' component={Outcome} />
         </div>
       </Router>
     )
