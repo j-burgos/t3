@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Square from './Square'
+
+import '../App.css'
 import './Game.css'
 
 const free = 0

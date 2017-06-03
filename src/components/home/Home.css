@@ -1,31 +1,36 @@
-.screen {
-  text-align: center;
+.title {
+  flex: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.main-title {
+.title h1 {
+  font-family: 'Signika';
   font-size: 3em;
   text-align: center;
 }
 
 .button-container {
-  margin: 8em;
+  flex: 10;
 }
 
-.primary {
-  color: #fff;
-  padding: 1em 3em;
+.button-container a {
+  display: block;
+  background: #FF6700;
+  border-radius: 2em;
+  padding: 0.3em 3em;
   line-height: 2em;
   font-size: 2em;
-  background: linear-gradient(0,rgb(234,33,45),rgb(123,45,4));
-  border-radius: 2em;
   text-decoration: none;
   text-transform: uppercase;
+  color: #fff;
 }
 
-.copyright {
-  width: 100%;
-  position: absolute;
-  bottom: 1em;
+.footer {
+  flex: 1;
+}
+
+.footer p {
   font-size: 0.8em;
 }
-
