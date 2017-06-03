@@ -3,19 +3,12 @@ import './Game.css'
 
 export default class Square extends Component {
 
-  onClick () {
-    this.props.onClick()
-  }
-
-  showPlayer () {
-    const player = this.props.player
-    return player === undefined ? '' : player
-  }
-
   render () {
+    const value = this.props.value
+    const valueRep = value === 0 ? '' : value === 1 ? 'X' : '0' 
     return (
-      <div className="position" onClick={this.onClick.bind(this)}>
-        { this.showPlayer() }
+      <div className="position" onClick={this.props.onClick}>
+        { valueRep }
       </div>
     )
   }
