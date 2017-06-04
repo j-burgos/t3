@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 
 import Home from './home/Home'
-import Board from './board/Board'
+import Game from './game/Game'
 
 class App extends Component {
   render () {
@@ -16,7 +16,7 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route path='/play' render={() => <Board size={3} />} />
+          <Route path='/play' render={() => <Game boardSize={3} />} />
           <Route path='/replay'>
             <Redirect to='/play' />
           </Route>
