@@ -1,0 +1,10 @@
+.mark {
+  width: 100%;
+  height: 100%;
+}
+
+.line {
+  fill: transparent;
+  stroke: #1F2421;
+  stroke-width: 10;
+}
