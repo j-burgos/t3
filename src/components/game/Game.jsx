@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Board from '../board/Board'
 
+import './Game.css'
+
 const free = 0
 const player1 = 1
 const player2 = -1
@@ -157,10 +159,16 @@ export default class Game extends Component {
     const winCoords = []
     return (
       <div className='screen'>
-        <Board board={board} winCoords={winCoords} onSquareClick={this.onSquareClick.bind(this)} />
-        { turnComp }
-        { outcomeComp}
-        { replay }
+        <div className='game'>
+          <div className='board-container'>
+            <Board board={board} winCoords={winCoords} onSquareClick={this.onSquareClick.bind(this)} />
+          </div>
+          <div className='hud'>
+            { turnComp }
+            { outcomeComp}
+            { replay }
+          </div>
+        </div>
       </div>
     )
   }

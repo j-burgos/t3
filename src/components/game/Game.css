@@ -1,0 +1,23 @@
+.game {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.board-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex: 2;
+  padding: 2em;
+  justify-content: center;
+  align-items: center;
+}
+
+.hud {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
