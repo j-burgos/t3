@@ -4,7 +4,20 @@
 }
 
 .line {
+  animation: draw 2s ease forwards;
   fill: transparent;
   stroke: #1F2421;
   stroke-width: 10;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+.crossing {
+  animation-delay: 0.2s;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
