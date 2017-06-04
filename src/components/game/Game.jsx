@@ -152,7 +152,7 @@ export default class Game extends Component {
     const winnerComp = winner && <h1>Winner: {winner === player1 ? 'X' : 'O'}</h1>
     const drawComp = outcome && <h1>It's a draw!</h1>
     const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
-    const replayButton = <Link replace className='button' to='/replay'>Replay</Link>
+    const replayButton = <Link replace className='button' to='/replay'><i className="fa fa-repeat" aria-hidden="true"></i> Rematch</Link>
     const replay = outcome && replayButton
     const winCoords = []
     return (

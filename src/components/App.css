@@ -5,18 +5,33 @@
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background: #FFF4C1;
+  background: #F0F0C9;
   text-align: center;
 }
 
 .button {
+  animation: scale 1.2s ease infinite;
   display: block;
-  background: #FF6700;
+  background: linear-gradient(#D00000, #E00A01);
+  box-shadow: 2px 4px 16px #D00;
   border-radius: 2em;
   padding: 0.3em 3em;
+  font-family: 'Signika', sans-serif;
   line-height: 2em;
   font-size: 2em;
   text-decoration: none;
   text-transform: uppercase;
   color: #fff;
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
