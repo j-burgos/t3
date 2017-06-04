@@ -2,19 +2,43 @@
   width: 100%;
   height: 100%;
 }
+.mark.x .line {
+  stroke: #124E78;
+}
+.mark.o .line {
+  stroke: #6E0E0A;
+}
+@keyframes win {
+  0% {
+    transform: scale(1.0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.0);
+  }
+}
+
+.mark.win {
+  animation: win 2s ease forwards infinite;
+}
+.mark.win .line {
+  stroke: #66D32C;
+}
 
 .line {
-  animation: draw 2s ease forwards;
+  animation: draw 1s ease-in-out forwards;
   fill: transparent;
-  stroke: #1F2421;
   stroke-width: 10;
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
 }
 
-.crossing {
+.line.crossing {
   animation-delay: 0.2s;
 }
+
 
 @keyframes draw {
   to {
