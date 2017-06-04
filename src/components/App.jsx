@@ -2,22 +2,25 @@ import React, { Component } from 'react'
 
 import {
   BrowserRouter as Router,
-  Route
+  Route,
+  Redirect,
+  Switch
 } from 'react-router-dom'
 
 import Home from './home/Home'
 import Board from './board/Board'
-import Outcome from './outcome/Outcome'
 
 class App extends Component {
   render () {
     return (
       <Router>
-        <div>
+        <Switch>
           <Route exact path='/' component={Home} />
-          <Route path='/play' component={Board} />
-          <Route path='/outcome' component={Outcome} />
-        </div>
+          <Route path='/play' render={() => <Board size={3} />} />
+          <Route path='/replay'>
+            <Redirect to='/play' />
+          </Route>
+        </Switch>
       </Router>
     )
   }

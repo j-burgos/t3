@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Square from '../square/Square'
+import { Link } from 'react-router-dom'
 
 import '../App.css'
 import './Board.css'
@@ -7,6 +8,7 @@ import './Board.css'
 const free = 0
 const player1 = 1
 const player2 = -1
+const draw = 'draw'
 
 const initBoard = size => Array(size).fill(0).map(e => Array(size).fill(0))
 
@@ -33,17 +35,23 @@ const isLineWon = (size, lineScore, p1, p2) => {
 }
 
 export default class Board extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
+    const size = props.size
     this.state = {
-      board: initBoard(3),
-      rowScores: Array(3).fill(0),
-      columnScores: Array(3).fill(0),
+      board: initBoard(size),
+      rowScores: Array(size).fill(0),
+      columnScores: Array(props.size).fill(0),
       forwardDiagonal: 0,
       backwardDiagonal: 0,
       currentPlayer: player1,
+      outcome: undefined,
       winner: undefined
     }
+  }
+
+  componentDidMount () {
+
   }
 
   updateScores (x, y) {
@@ -67,15 +75,22 @@ export default class Board extends Component {
     const diagFWinner = isLineWon(size, newForwardDiagonal, player1, player2)
     const diagBWinner = isLineWon(size, newBackwardDiagonal, player1, player2)
 
+    const remainingSquares = board.reduce((acc, r) => {
+      return acc + r.filter(c => c === free).length
+    }, 0)
+
     const winner = rowWinner
       .concat(colWinner)
       .concat([diagFWinner])
       .concat([diagBWinner])
       .reduce((acc, i) => i || acc)
 
+    const outcome = remainingSquares === 0 && winner === undefined ? draw : winner
+
     return {
       rowScores,
       columnScores,
+      outcome,
       winner,
       forwardDiagonal: newForwardDiagonal,
       backwardDiagonal: newBackwardDiagonal
@@ -90,8 +105,8 @@ export default class Board extends Component {
   }
 
   makeMove (x, y) {
-    const { winner } = this.state
-    if (winner !== undefined) return
+    const { outcome } = this.state
+    if (outcome !== undefined) return
 
     const { board, currentPlayer } = this.state
     const squareValue = board[y][x]
@@ -108,10 +123,13 @@ export default class Board extends Component {
   }
 
   render () {
-    const winner = <h1>Winner: {this.state.winner === player1 ? 'X' : 'O'}</h1>
-    const turn = (
-      <h2>Turn: {this.state.currentPlayer === player1 ? 'X' : 'O'}</h2>
-    )
+    const { outcome, winner, currentPlayer } = this.state
+    const turnComp = outcome === undefined && <h1>It's {currentPlayer === player1 ? 'X' : 'O'} turn</h1>
+    const winnerComp = winner && <h1>Winner: {winner === player1 ? 'X' : 'O'}</h1>
+    const drawComp = outcome && <h1>It's a draw!</h1>
+    const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
+    const replayButton = <Link replace className='button' to='/replay'>Replay</Link>
+    const replay = outcome && replayButton
     return (
       <div className='screen'>
         <div className='board-container'>
@@ -129,8 +147,9 @@ export default class Board extends Component {
             })
           )}
         </div>
-        {this.state.winner === undefined && turn}
-        {this.state.winner !== undefined && winner}
+        { turnComp }
+        { outcomeComp}
+        { replay }
       </div>
     )
   }
