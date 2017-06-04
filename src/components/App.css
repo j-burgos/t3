@@ -1,3 +1,9 @@
+.screen-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
 .screen {
   display: flex;
   align-items: center;
@@ -5,23 +11,48 @@
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background: #F0F0C9;
+  background: url('./bg.png') #F0F0C9;
   text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .button {
-  animation: scale 1.2s ease infinite;
+  animation: scale 2s ease infinite;
   display: block;
-  background: linear-gradient(#D00000, #E00A01);
-  box-shadow: 2px 4px 16px #D00;
+  background: linear-gradient(#D00000, #C00401);
+  box-shadow: 2px 2px 16px #C00401;
   border-radius: 2em;
-  padding: 0.3em 3em;
+  padding: 0.1em 1em;
   font-family: 'Signika', sans-serif;
   line-height: 2em;
   font-size: 2em;
   text-decoration: none;
   text-transform: uppercase;
   color: #fff;
+}
+
+.fade-enter {
+  opacity: 0.01;
+  z-index: 1;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  z-index: 0;
+  transition: all 500ms ease-in;
+}
+
+.fade-leave {
+  opacity: 1;
+  z-index: 0;
+}
+
+.fade-leave.fade-leave-active {
+  opacity: 0.01;
+  z-index: 1;
+  transition: all 500ms ease-in;
 }
 
 @keyframes scale {
