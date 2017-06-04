@@ -31,8 +31,9 @@ const isLineWon = (size, lineScore, p1, p2) => {
   return p1Won ? p1 : p2Won ? p2 : undefined
 }
 
-export default class Game extends Component {
+const sum = (acc, i) => acc + i
 
+export default class Game extends Component {
   constructor (props) {
     super(props)
     const { boardSize } = props
@@ -48,16 +49,37 @@ export default class Game extends Component {
     }
   }
 
-  updateScores (x, y) {
-    const { board } = this.state
-    const { rowScores, columnScores } = this.state
+  updateRowScores (x, y) {
+    const { board, rowScores } = this.state
     const sum = (acc, item) => acc + item
-
     rowScores[y] = board[y].reduce(sum, 0)
-    columnScores[x] = getColumn(board, x).reduce(sum, 0)
+    return {
+      rowScores
+    }
+  }
 
-    const newForwardDiagonal = getDiagonal(board).reduce(sum, 0)
-    const newBackwardDiagonal = getDiagonal(board, true).reduce(sum, 0)
+  updateColumnScores (x, y) {
+    const { board, columnScores } = this.state
+    columnScores[x] = getColumn(board, x).reduce(sum, 0)
+    return {
+      columnScores
+    }
+  }
+
+  updateDiagonalScores () {
+    const { board } = this.state
+    const forwardDiagonal = getDiagonal(board).reduce(sum, 0)
+    const backwardDiagonal = getDiagonal(board, true).reduce(sum, 0)
+    return {
+      forwardDiagonal,
+      backwardDiagonal
+    }
+  }
+
+  updateWinner (scores) {
+    const { board } = this.state
+    const { rowScores, columnScores } = scores
+    const { forwardDiagonal, backwardDiagonal } = scores
 
     const size = board.length
     const rowWinner = rowScores
@@ -66,8 +88,8 @@ export default class Game extends Component {
     const colWinner = columnScores
       .map(s => isLineWon(size, s, player1, player2))
       .filter(s => s !== undefined)
-    const diagFWinner = isLineWon(size, newForwardDiagonal, player1, player2)
-    const diagBWinner = isLineWon(size, newBackwardDiagonal, player1, player2)
+    const diagFWinner = isLineWon(size, forwardDiagonal, player1, player2)
+    const diagBWinner = isLineWon(size, backwardDiagonal, player1, player2)
 
     const remainingSquares = board.reduce((acc, r) => {
       return acc + r.filter(c => c === free).length
@@ -82,33 +104,41 @@ export default class Game extends Component {
     const outcome = remainingSquares === 0 && winner === undefined ? draw : winner
 
     return {
-      rowScores,
-      columnScores,
       outcome,
-      winner,
-      forwardDiagonal: newForwardDiagonal,
-      backwardDiagonal: newBackwardDiagonal
+      winner
     }
   }
 
   toggleTurn () {
-    const currentPlayer = this.state.currentPlayer === player2
-      ? player1
-      : player2
-    return { currentPlayer }
+    const { currentPlayer } = this.state
+    const nextPlayer = currentPlayer === player1 ? player2 : player1
+    return {
+      currentPlayer: nextPlayer
+    }
   }
 
   makeMove (x, y) {
-    const { outcome } = this.state
+    const { board, currentPlayer, outcome } = this.state
     if (outcome !== undefined) return
 
-    const { board, currentPlayer } = this.state
     const squareValue = board[y][x]
     const isSquareFree = squareValue === free
     if (isSquareFree) {
       board[y][x] = isSquareFree ? currentPlayer : squareValue
-      this.setState((state, props) => this.updateScores(x, y))
-      this.setState((state, props) => this.toggleTurn())
+      const scores = {
+        ...this.updateRowScores(x, y),
+        ...this.updateColumnScores(x, y),
+        ...this.updateDiagonalScores()
+      }
+      const result = this.updateWinner(scores)
+      const nextPlayer = this.toggleTurn()
+      this.setState((state, props) => {
+        return {
+          ...scores,
+          ...result,
+          ...nextPlayer
+        }
+      })
     }
   }
 
@@ -124,9 +154,10 @@ export default class Game extends Component {
     const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
     const replayButton = <Link replace className='button' to='/replay'>Replay</Link>
     const replay = outcome && replayButton
+    const winCoords = []
     return (
       <div className='screen'>
-        <Board board={board} onSquareClick={this.onSquareClick.bind(this)} />
+        <Board board={board} winCoords={winCoords} onSquareClick={this.onSquareClick.bind(this)} />
         { turnComp }
         { outcomeComp}
         { replay }
