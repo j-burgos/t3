@@ -1,14 +1,5 @@
 .board-container {
   display: flex;
-  margin: 0 auto;
-  width: 13em;
+  flex-direction: column;
   flex-wrap: wrap;
-}
-.position {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #000;
-  width: 4em;
-  height: 4em;
 }

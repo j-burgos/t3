@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Square from '../square/Square'
+import Row from '../row/Row'
 import { Link } from 'react-router-dom'
 
 import '../App.css'
@@ -123,29 +123,24 @@ export default class Board extends Component {
   }
 
   render () {
-    const { outcome, winner, currentPlayer } = this.state
+    const { board, outcome, winner, currentPlayer } = this.state
     const turnComp = outcome === undefined && <h1>It's {currentPlayer === player1 ? 'X' : 'O'} turn</h1>
     const winnerComp = winner && <h1>Winner: {winner === player1 ? 'X' : 'O'}</h1>
     const drawComp = outcome && <h1>It's a draw!</h1>
     const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
     const replayButton = <Link replace className='button' to='/replay'>Replay</Link>
     const replay = outcome && replayButton
+    const rows = board.map((items, rowIndex) => {
+      const onSquareClick = this.onSquareClick.bind(this)
+      return (
+        <Row key={rowIndex}
+          index={rowIndex} items={items} onSquareClick={onSquareClick} />
+      )
+    })
     return (
       <div className='screen'>
         <div className='board-container'>
-          {this.state.board.map((row, y) =>
-            row.map((c, x) => {
-              const k = `${x}-${y}`
-              const value = this.state.board[y][x]
-              return (
-                <Square
-                  key={k}
-                  value={value}
-                  onClick={() => this.onSquareClick(x, y)}
-                />
-              )
-            })
-          )}
+          { rows }
         </div>
         { turnComp }
         { outcomeComp}

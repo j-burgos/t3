@@ -6,7 +6,7 @@ export default class Square extends Component {
     const value = this.props.value
     const valueRep = value === 0 ? '' : value === 1 ? 'X' : '0'
     return (
-      <div className='position' onClick={this.props.onClick}>
+      <div className='square' onClick={this.props.onClick}>
         {valueRep}
       </div>
     )
