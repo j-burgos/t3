@@ -9,7 +9,7 @@ export default class Board extends Component {
     const { board, winCoords, onSquareClick } = this.props
     const rows = board.map((rowItems, rowIndex) => {
       const items = rowItems.map((item, columnIndex) => {
-        const isWinner = winCoords.includes(item)
+        const isWinner = winCoords.find(({x,y}) => x === rowIndex && y === columnIndex)
         return {
           value: item,
           isWinner: isWinner

@@ -14,21 +14,39 @@ const draw = 'draw'
 
 const initBoard = (size) => Array(size).fill(0).map(e => Array(size).fill(0))
 
-const getColumn = (board, columnIndex) => board.map(row => row[columnIndex])
+const getRow = (board, rowIndex) => board[rowIndex].map((item, colIndex) => {
+  return {
+    x: rowIndex,
+    y: colIndex,
+    v: item
+  }
+})
+const getColumn = (board, colIndex) => board.map((row, rowIndex) => {
+  return {
+    x: rowIndex, 
+    y: colIndex, 
+    v: row[colIndex]
+  }
+})
 
-const getDiagonal = (board, backward) =>
-  board.reduce((acc, row, rowIndex) => {
-    const backwardCondition = (rowIndex, columnIndex) => {
-      return columnIndex === Math.abs(rowIndex - (board.length - 1))
-    }
-    const forwardCondition = (rowIndex, columnIndex) =>
-      columnIndex === rowIndex
-    const condition = backward ? backwardCondition : forwardCondition
-    const element = row.filter((column, columnIndex) =>
-      condition(rowIndex, columnIndex)
-    )
-    return acc.concat(element)
+const getDiagonal = (board, backward) => board.reduce((acc, row, rowIndex) => {
+  const backwardCondition = (rowIndex, columnIndex) => {
+    return columnIndex === Math.abs(rowIndex - (board.length - 1))
+  }
+  const forwardCondition = (rowIndex, columnIndex) => columnIndex === rowIndex
+
+  const condition = backward ? backwardCondition : forwardCondition
+  const element = row.reduce((acc, column, columnIndex) => {
+    const isInDiag = condition(rowIndex, columnIndex)
+    const square = isInDiag ? [{x: columnIndex, y: rowIndex, v: column}] : []
+    return acc.concat(square)
   }, [])
+
+  return acc.concat(element)
+}, [])
+
+const getForwardDiagonal = (board) => getDiagonal(board)
+const getBackwardDiagonal = (board) => getDiagonal(board, true)
 
 const isLineWon = (size, lineScore, p1, p2) => {
   const p1Won = lineScore === size
@@ -36,7 +54,7 @@ const isLineWon = (size, lineScore, p1, p2) => {
   return p1Won ? p1 : p2Won ? p2 : undefined
 }
 
-const sum = (acc, i) => acc + i
+const sum = (acc, { v }) => acc + v
 
 export default class Game extends Component {
   constructor (props) {
@@ -52,7 +70,8 @@ export default class Game extends Component {
     }
     const result = {
       outcome: undefined,
-      winner: undefined
+      winner: undefined,
+      winCoords: []
     }
     this.state = {
       board: board,
@@ -65,7 +84,7 @@ export default class Game extends Component {
   updateMatrixScores (x, y) {
     const { board, scores } = this.state
     const { rows, cols } = scores
-    rows[y] = board[y].reduce(sum, 0)
+    rows[y] = getRow(board, y).reduce(sum, 0)
     cols[x] = getColumn(board, x).reduce(sum, 0)
     return {
       rows,
@@ -75,9 +94,13 @@ export default class Game extends Component {
 
   updateDiagonalScores () {
     const { board } = this.state
-    const fdiag = getDiagonal(board).reduce(sum, 0)
-    const bdiag = getDiagonal(board, true).reduce(sum, 0)
+    const fdiagCoords = getForwardDiagonal(board)
+    const bdiagCoords = getBackwardDiagonal(board)
+    const fdiag = fdiagCoords.reduce(sum, 0)
+    const bdiag = bdiagCoords.reduce(sum, 0)
     return {
+      fdiagCoords,
+      bdiagCoords,      
       fdiag,
       bdiag
     }
@@ -85,34 +108,49 @@ export default class Game extends Component {
 
   updateResult (scores) {
     const { board } = this.state
-    const { rows, cols, fdiag, bdiag } = scores
+    const { rows, cols, fdiag, bdiag, fdiagCoords, bdiagCoords } = scores
 
     const size = board.length
-    const rowWinner = rows
-      .map(s => isLineWon(size, s, player1, player2))
-      .filter(s => s !== undefined)
-    const colWinner = cols
-      .map(s => isLineWon(size, s, player1, player2))
-      .filter(s => s !== undefined)
-    const diagFWinner = isLineWon(size, fdiag, player1, player2)
-    const diagBWinner = isLineWon(size, bdiag, player1, player2)
 
-    const remainingSquares = board.reduce((acc, r) => {
-      return acc + r.filter(c => c === free).length
-    }, 0)
+    const getLineWinner = score => isLineWon(size, score, player1, player2)
+    const isWinner = winner => winner !== undefined
+
+    const rowWinners = rows.map(getLineWinner)
+    const rowWinner = rowWinners.filter(isWinner)
+    const rowWinIndex = rowWinners.findIndex(isWinner)
+
+    const colWinners = cols.map(getLineWinner)
+    const colWinner = colWinners.filter(isWinner)
+    const colWinIndex = colWinners.findIndex(isWinner)
+
+    const fdiagWinner = isLineWon(size, fdiag, player1, player2)
+    const bdiagWinner = isLineWon(size, bdiag, player1, player2)
+
+    const winCoords =
+      fdiagWinner ? fdiagCoords :
+      bdiagWinner ? bdiagCoords :
+      rowWinIndex > -1 ? getRow(board, rowWinIndex) :
+      colWinIndex > -1 ? getColumn(board, colWinIndex) : []
 
     const winner = rowWinner
       .concat(colWinner)
-      .concat([diagFWinner])
-      .concat([diagBWinner])
+      .concat([fdiagWinner])
+      .concat([bdiagWinner])
       .reduce((acc, i) => i || acc)
 
-    const outcome = remainingSquares === 0 && winner === undefined ? draw : winner
+    const remainingSquares = board.reduce((acc, row) => {
+      return acc + row.filter(col => col === free).length
+    }, 0)
+    
+    const noMoreSpaces = remainingSquares === 0
+    const noWinner = winner === undefined
+    const outcome = noMoreSpaces && noWinner ? draw : winner
 
     return {
       result: {
         outcome,
-        winner
+        winner,
+        winCoords
       }
     }
   }
@@ -156,7 +194,7 @@ export default class Game extends Component {
 
   render () {
     const { board, result, currentPlayer } = this.state
-    const { outcome, winner } = result
+    const { outcome, winner, winCoords } = result
     const playerComp = currentPlayer === player1 ? <PlayerX /> : <PlayerO />
     const turnComp = outcome === undefined && <Turn player={playerComp} />
     const winnerComp = winner && <h1>Winner: {winner === player1 ? 'X' : 'O'}</h1>
@@ -171,7 +209,6 @@ export default class Game extends Component {
     const quitButton = <Link replace className='button secondary' to='/quit'>Quit</Link>
     const replay = outcome && replayButton
     const quit = outcome && quitButton
-    const winCoords = []
     return (
       <div className='screen'>
         <div className='game'>
