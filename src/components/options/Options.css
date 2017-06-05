@@ -1,0 +1,12 @@
+input {
+  border: 1px solid transparent;
+  border-radius: 2em;
+  text-align: center;
+  outline: none;
+  font-family: 'Signika', sans-serif;
+  font-size: 2em;
+  padding: 0.4em 0;
+  width: 8em;
+  margin: 0.4em;
+  border-radius: 0.8em;
+}

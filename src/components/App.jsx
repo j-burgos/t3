@@ -9,6 +9,7 @@ import {
 
 import Home from './home/Home'
 import Game from './game/Game'
+import Options from './options/Options'
 
 class App extends Component {
   render () {
@@ -28,6 +29,8 @@ class App extends Component {
                 }} />
                 <Route path='/play'>
                   <Redirect to='/play/3' />
+                </Route>
+                <Route path='/options' component={Options}>
                 </Route>
                 <Route path='/quit'>
                   <Redirect to='/' />
