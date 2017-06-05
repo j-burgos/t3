@@ -13,7 +13,7 @@ export default class Home extends Component {
         </div>
         <div className='button-container'>
           <Link className='button' to='/play'>
-            <i className="fa fa-play" aria-hidden="true"></i> Start
+            <i className='fa fa-play' aria-hidden='true' /> Start
           </Link>
         </div>
         <div className='footer'>

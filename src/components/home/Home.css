@@ -3,11 +3,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 2em;
 }
 
 .title h1 {
-  font-family: 'Signika';
-  font-size: 3em;
+  font-family: 'Signika', sans-serif;
+  font-size: 4em;
   text-align: center;
 }
 
