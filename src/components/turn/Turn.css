@@ -1,0 +1,19 @@
+.turn-container {
+  display: flex;
+}
+
+.turn-text {
+  font-family: 'Signika', sans-serif;
+  line-height: 2em;
+  font-size: 2em;
+  padding: 0em 0.2em;
+}
+.player-container {
+  width: 2em;
+}
+
+.turn-container .line {
+  animation: none;
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+}

@@ -1,7 +1,8 @@
 .game {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
+  height: 100vh; 
 }
 
 .board-container {
@@ -18,6 +19,6 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 }

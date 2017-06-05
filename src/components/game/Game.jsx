@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Board from '../board/Board'
 
+import Turn from '../turn/Turn'
+import PlayerX from '../player/PlayerX'
+import PlayerO from '../player/PlayerO'
 import './Game.css'
 
 const free = 0
@@ -150,11 +153,12 @@ export default class Game extends Component {
 
   render () {
     const { board, outcome, winner, currentPlayer } = this.state
-    const turnComp = outcome === undefined && <h1>It's {currentPlayer === player1 ? 'X' : 'O'} turn</h1>
+    const playerComp = currentPlayer === player1 ? <PlayerX /> : <PlayerO />
+    const turnComp = outcome === undefined && <Turn player={playerComp}/>
     const winnerComp = winner && <h1>Winner: {winner === player1 ? 'X' : 'O'}</h1>
     const drawComp = outcome && <h1>It's a draw!</h1>
     const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
-    const replayButton = <Link replace className='button' to='/replay'><i className="fa fa-repeat" aria-hidden="true"></i> Rematch</Link>
+    const replayButton = <Link replace className='button' to='/replay'><i className='fa fa-repeat' aria-hidden='true' /> Rematch</Link>
     const replay = outcome && replayButton
     const winCoords = []
     return (
