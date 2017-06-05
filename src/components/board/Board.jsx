@@ -6,13 +6,15 @@ import './Board.css'
 
 export default class Board extends Component {
   render () {
-    const { board, winCoords, onSquareClick } = this.props
+    const { board, finished, winCoords, onSquareClick } = this.props
     const rows = board.map((rowItems, rowIndex) => {
       const items = rowItems.map((item, columnIndex) => {
-        const isWinner = winCoords.find(({x,y}) => x === rowIndex && y === columnIndex)
+        const condition = ({x, y}) => x === rowIndex && y === columnIndex
+        const isWinner = winCoords.find(condition)
+        const className = finished && isWinner ? 'win' : finished ? 'dim' : ''
         return {
           value: item,
-          isWinner: isWinner
+          className: className
         }
       })
       return (

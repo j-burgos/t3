@@ -23,8 +23,8 @@ const getRow = (board, rowIndex) => board[rowIndex].map((item, colIndex) => {
 })
 const getColumn = (board, colIndex) => board.map((row, rowIndex) => {
   return {
-    x: rowIndex, 
-    y: colIndex, 
+    x: rowIndex,
+    y: colIndex,
     v: row[colIndex]
   }
 })
@@ -100,7 +100,7 @@ export default class Game extends Component {
     const bdiag = bdiagCoords.reduce(sum, 0)
     return {
       fdiagCoords,
-      bdiagCoords,      
+      bdiagCoords,
       fdiag,
       bdiag
     }
@@ -127,10 +127,10 @@ export default class Game extends Component {
     const bdiagWinner = isLineWon(size, bdiag, player1, player2)
 
     const winCoords =
-      fdiagWinner ? fdiagCoords :
-      bdiagWinner ? bdiagCoords :
-      rowWinIndex > -1 ? getRow(board, rowWinIndex) :
-      colWinIndex > -1 ? getColumn(board, colWinIndex) : []
+      fdiagWinner ? fdiagCoords
+      : bdiagWinner ? bdiagCoords
+      : rowWinIndex > -1 ? getRow(board, rowWinIndex)
+      : colWinIndex > -1 ? getColumn(board, colWinIndex) : []
 
     const winner = rowWinner
       .concat(colWinner)
@@ -141,7 +141,7 @@ export default class Game extends Component {
     const remainingSquares = board.reduce((acc, row) => {
       return acc + row.filter(col => col === free).length
     }, 0)
-    
+
     const noMoreSpaces = remainingSquares === 0
     const noWinner = winner === undefined
     const outcome = noMoreSpaces && noWinner ? draw : winner
@@ -202,7 +202,7 @@ export default class Game extends Component {
     const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
     const next = `/play/${board.length}`
     const replayButton = (
-      <Link replace className='button primary animated' to={next}>
+      <Link replace className='button primary' to={next}>
         Rematch
       </Link>
     )
@@ -213,7 +213,9 @@ export default class Game extends Component {
       <div className='screen'>
         <div className='game'>
           <div className='board-container'>
-            <Board board={board} winCoords={winCoords} onSquareClick={this.onSquareClick.bind(this)} />
+            <Board board={board} finished={outcome}
+              onSquareClick={this.onSquareClick.bind(this)}
+              winCoords={winCoords} />
           </div>
           <div className='hud'>
             { turnComp }

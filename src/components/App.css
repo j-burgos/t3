@@ -19,6 +19,7 @@
 }
 
 .button {
+  transition: all 200ms ease-in-out;
   display: block;
   border-radius: 2em;
   margin: 0.4em;
@@ -29,6 +30,24 @@
   font-weight: 700;
   text-decoration: none;
   text-transform: uppercase;
+}
+.button:hover {
+  transform: scale(1.1);
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.button.animated {
+  animation: scale 2s ease-in-out infinite;
 }
 .button:active {
   animation: none !important;
@@ -44,10 +63,8 @@
   box-shadow: 2px 2px 16px #6E0E0A;
   color: #fff;
 }
-.button.animated {
-  animation: scale 2s ease infinite;
-}
 
+/* Screen fade transition */
 .fade-enter {
   opacity: 0.01;
   z-index: 1;
@@ -68,16 +85,4 @@
   opacity: 0.01;
   z-index: 1;
   transition: all 500ms ease-in;
-}
-
-@keyframes scale {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
 }
