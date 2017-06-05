@@ -160,8 +160,12 @@ export default class Game extends Component {
     const drawComp = outcome && <h1>It's a draw!</h1>
     const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
     const next = `/play/${board.length}`
-    const replayButton = <Link replace className='button' to={next}><i className='fa fa-repeat' aria-hidden='true' /> Rematch</Link>
-    const quitButton = <Link replace className='button' to='/quit'>Quit</Link>
+    const replayButton = (
+      <Link replace className='button primary animated' to={next}>
+        <i className='fa fa-repeat' aria-hidden='true' /> Rematch
+      </Link>
+    )
+    const quitButton = <Link replace className='button secondary' to='/quit'>Quit</Link>
     const replay = outcome && replayButton
     const quit = outcome && quitButton
     const winCoords = []

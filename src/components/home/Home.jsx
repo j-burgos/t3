@@ -12,8 +12,8 @@ export default class Home extends Component {
           <h1>Tic Tac Toe</h1>
         </div>
         <div className='button-container'>
-          <Link className='button' to='/play'>
-            <i className='fa fa-play' aria-hidden='true' /> Start
+          <Link className='button primary animated' to='/options'>
+            Start
           </Link>
         </div>
         <div className='footer'>

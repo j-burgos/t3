@@ -19,18 +19,33 @@
 }
 
 .button {
-  animation: scale 2s ease infinite;
   display: block;
-  background: linear-gradient(#D00000, #C00401);
-  box-shadow: 2px 2px 16px #C00401;
   border-radius: 2em;
-  padding: 0.1em 1em;
+  margin: 0.4em;
+  padding: 0 1.6em;
   font-family: 'Signika', sans-serif;
   line-height: 2em;
   font-size: 2em;
+  font-weight: 700;
   text-decoration: none;
   text-transform: uppercase;
+}
+.button:active {
+  animation: none !important;
+  transform: scale(0.9);
+}
+.button.primary {
+  background: linear-gradient(#D00000, #C00401);
+  box-shadow: 2px 2px 16px #C00401;
   color: #fff;
+}
+.button.secondary {
+  background: linear-gradient(#6E0E0A, #5A0E0A);
+  box-shadow: 2px 2px 16px #6E0E0A;
+  color: #fff;
+}
+.button.animated {
+  animation: scale 2s ease infinite;
 }
 
 .fade-enter {
