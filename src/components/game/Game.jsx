@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import Board from '../board/Board'
 
 import Turn from '../turn/Turn'
+import Result from '../result/Result'
 import PlayerX from '../player/PlayerX'
 import PlayerO from '../player/PlayerO'
+
 import './Game.css'
 
 const free = 0
@@ -195,20 +197,35 @@ export default class Game extends Component {
   render () {
     const { board, result, currentPlayer } = this.state
     const { outcome, winner, winCoords } = result
-    const playerComp = currentPlayer === player1 ? <PlayerX /> : <PlayerO />
-    const turnComp = outcome === undefined && <Turn player={playerComp} />
-    const winnerComp = winner && <h1>Winner: {winner === player1 ? 'X' : 'O'}</h1>
-    const drawComp = outcome && <h1>It's a draw!</h1>
-    const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
-    const next = `/play/${board.length}`
-    const replayButton = (
-      <Link replace className='button primary' to={next}>
-        Rematch
-      </Link>
+
+    const CurrentTurn = () => {
+      const isPlayer1 = currentPlayer === player1
+      const notFinished = outcome === undefined
+      const player = isPlayer1 ? <PlayerX /> : <PlayerO />
+      return notFinished && <Turn player={player} />
+    }
+
+    const ResultWithPlayer = () => {
+      const isDraw = outcome === draw
+      const isWinnerPlayer1 = winner === player1
+      const player = isWinnerPlayer1 ? <PlayerX /> : <PlayerO />
+      return <Result isDraw={isDraw} winner={player} />
+    }
+
+    const Rematch = () => {
+      const next = `/play/${board.length}`
+      const rematchLink = (
+        <Link replace className='button primary' to={next}>
+          Rematch
+        </Link>
+      )
+      return rematchLink
+    }
+
+    const Quit = () => (
+      <Link replace className='button secondary' to='/quit'>Quit</Link>
     )
-    const quitButton = <Link replace className='button secondary' to='/quit'>Quit</Link>
-    const replay = outcome && replayButton
-    const quit = outcome && quitButton
+
     return (
       <div className='screen'>
         <div className='game'>
@@ -218,10 +235,10 @@ export default class Game extends Component {
               winCoords={winCoords} />
           </div>
           <div className='hud'>
-            { turnComp }
-            { outcomeComp}
-            { replay }
-            { quit }
+            <CurrentTurn />
+            { outcome && <ResultWithPlayer /> }
+            { outcome && <Rematch /> }
+            { outcome && <Quit /> }
           </div>
         </div>
       </div>

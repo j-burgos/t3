@@ -1,0 +1,19 @@
+.result-text {
+  font-size: 3em;
+  margin: 0 0.2em;
+}
+
+.result-container .line {
+  animation: none;
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+}
+
+.result {
+  display: flex;
+  margin: 1em 0em;
+}
+
+.player-container {
+  width: 3em
+}
