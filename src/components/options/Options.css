@@ -1,5 +1,6 @@
 input {
-  border: 1px solid transparent;
+  transition: all 300ms ease-in-out;
+  border: 1px solid #FFD151;
   border-radius: 2em;
   text-align: center;
   outline: none;
@@ -9,4 +10,14 @@ input {
   width: 8em;
   margin: 0.4em;
   border-radius: 0.8em;
+}
+input:hover {
+  box-shadow: 2px 2px 16px #FFD151;
+}
+
+.screen.options .title {
+  background: #F0F0C9;
+  margin: 0 0.2em;
+  font-size: 3em;
+  font-weight: normal;
 }

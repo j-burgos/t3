@@ -24,8 +24,8 @@ export default class Options extends Component {
   render () {
     const next = `/play/${this.state.size}`
     return (
-      <div className='screen'>
-        <h1>Set a board size:</h1>
+      <div className='screen options'>
+        <h1 className='title'>Set a board size:</h1>
         <input type='number' min='3' value={this.state.value} onChange={this.handleChange} />
         <Link className='button primary' to={next}>Play</Link>
       </div>
