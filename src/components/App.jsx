@@ -17,16 +17,20 @@ class App extends Component {
         <Route path='/' render={({location}) => (
           <div className='screen-container'>
             <CSSTransitionGroup
-              transitionName="fade"
+              transitionName='fade'
               transitionEnterTimeout={500}
               transitionLeaveTimeout={500}>
               <Switch key={location.key} location={location}>
                 <Route exact path='/' component={Home} />
+                <Route path='/play/:size' component={({match}) => {
+                  const size = match.params.size || 3
+                  return <Game boardSize={size} />
+                }} />
                 <Route path='/play'>
-                  <Game boardSize={3} />
+                  <Redirect to='/play/3' />
                 </Route>
-                <Route path='/replay'>
-                  <Redirect to='/play'/>
+                <Route path='/quit'>
+                  <Redirect to='/' />
                 </Route>
               </Switch>
             </CSSTransitionGroup>

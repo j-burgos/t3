@@ -12,7 +12,7 @@ const player1 = 1
 const player2 = -1
 const draw = 'draw'
 
-const initBoard = size => Array(size).fill(0).map(e => Array(size).fill(0))
+const initBoard = (size) => Array(size).fill(0).map(e => Array(size).fill(0))
 
 const getColumn = (board, columnIndex) => board.map(row => row[columnIndex])
 
@@ -42,10 +42,11 @@ export default class Game extends Component {
   constructor (props) {
     super(props)
     const { boardSize } = props
+    const size = Number(boardSize)
     this.state = {
-      board: initBoard(boardSize),
-      rowScores: Array(boardSize).fill(0),
-      columnScores: Array(boardSize).fill(0),
+      board: initBoard(size),
+      rowScores: Array(size).fill(0),
+      columnScores: Array(size).fill(0),
       forwardDiagonal: 0,
       backwardDiagonal: 0,
       currentPlayer: player1,
@@ -154,12 +155,15 @@ export default class Game extends Component {
   render () {
     const { board, outcome, winner, currentPlayer } = this.state
     const playerComp = currentPlayer === player1 ? <PlayerX /> : <PlayerO />
-    const turnComp = outcome === undefined && <Turn player={playerComp}/>
+    const turnComp = outcome === undefined && <Turn player={playerComp} />
     const winnerComp = winner && <h1>Winner: {winner === player1 ? 'X' : 'O'}</h1>
     const drawComp = outcome && <h1>It's a draw!</h1>
     const outcomeComp = outcome && outcome === draw ? drawComp : winnerComp
-    const replayButton = <Link replace className='button' to='/replay'><i className='fa fa-repeat' aria-hidden='true' /> Rematch</Link>
+    const next = `/play/${board.length}`
+    const replayButton = <Link replace className='button' to={next}><i className='fa fa-repeat' aria-hidden='true' /> Rematch</Link>
+    const quitButton = <Link replace className='button' to='/quit'>Quit</Link>
     const replay = outcome && replayButton
+    const quit = outcome && quitButton
     const winCoords = []
     return (
       <div className='screen'>
@@ -171,6 +175,7 @@ export default class Game extends Component {
             { turnComp }
             { outcomeComp}
             { replay }
+            { quit }
           </div>
         </div>
       </div>
