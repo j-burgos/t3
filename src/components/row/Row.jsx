@@ -8,9 +8,13 @@ export default class Row extends Component {
     const { items, index, onSquareClick } = this.props
     const squares = items.map((column, columnIndex) => {
       const key = `${index}-${columnIndex}`
-      const value = items[columnIndex]
+      const { value, isWinner } = items[columnIndex]
       const onClick = () => onSquareClick(columnIndex, index)
-      return <Square key={key} value={value} onClick={onClick} />
+      return (
+        <Square key={key} value={value}
+          onClick={onClick}
+          isWinner={isWinner} />
+      )
     })
     return (
       <div className='row'>
