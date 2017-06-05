@@ -13,10 +13,10 @@ export default class Options extends Component {
   handleChange (event) {
     const eventValue = event.target.value
     const size = parseInt(eventValue, 10)
-    this.setState((state,props) => {
+    this.setState((state, props) => {
       return {
         value: eventValue,
-        size: !isNaN(size) && size >=3 ? size : 3 
+        size: !isNaN(size) && size >= 3 ? size : 3
       }
     })
   }

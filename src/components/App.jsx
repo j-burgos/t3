@@ -30,8 +30,7 @@ class App extends Component {
                 <Route path='/play'>
                   <Redirect to='/play/3' />
                 </Route>
-                <Route path='/options' component={Options}>
-                </Route>
+                <Route path='/options' component={Options} />
                 <Route path='/quit'>
                   <Redirect to='/' />
                 </Route>

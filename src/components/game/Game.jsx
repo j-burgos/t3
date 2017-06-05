@@ -43,59 +43,59 @@ export default class Game extends Component {
     super(props)
     const { boardSize } = props
     const size = Number(boardSize)
-    this.state = {
-      board: initBoard(size),
-      rowScores: Array(size).fill(0),
-      columnScores: Array(size).fill(0),
-      forwardDiagonal: 0,
-      backwardDiagonal: 0,
-      currentPlayer: player1,
+    const board = initBoard(size)
+    const scores = {
+      rows: Array(size).fill(0),
+      cols: Array(size).fill(0),
+      fdiag: 0,
+      bdiag: 0
+    }
+    const result = {
       outcome: undefined,
       winner: undefined
     }
-  }
-
-  updateRowScores (x, y) {
-    const { board, rowScores } = this.state
-    const sum = (acc, item) => acc + item
-    rowScores[y] = board[y].reduce(sum, 0)
-    return {
-      rowScores
+    this.state = {
+      board: board,
+      scores: scores,
+      result: result,
+      currentPlayer: player1
     }
   }
 
-  updateColumnScores (x, y) {
-    const { board, columnScores } = this.state
-    columnScores[x] = getColumn(board, x).reduce(sum, 0)
+  updateMatrixScores (x, y) {
+    const { board, scores } = this.state
+    const { rows, cols } = scores
+    rows[y] = board[y].reduce(sum, 0)
+    cols[x] = getColumn(board, x).reduce(sum, 0)
     return {
-      columnScores
+      rows,
+      cols
     }
   }
 
   updateDiagonalScores () {
     const { board } = this.state
-    const forwardDiagonal = getDiagonal(board).reduce(sum, 0)
-    const backwardDiagonal = getDiagonal(board, true).reduce(sum, 0)
+    const fdiag = getDiagonal(board).reduce(sum, 0)
+    const bdiag = getDiagonal(board, true).reduce(sum, 0)
     return {
-      forwardDiagonal,
-      backwardDiagonal
+      fdiag,
+      bdiag
     }
   }
 
-  updateWinner (scores) {
+  updateResult (scores) {
     const { board } = this.state
-    const { rowScores, columnScores } = scores
-    const { forwardDiagonal, backwardDiagonal } = scores
+    const { rows, cols, fdiag, bdiag } = scores
 
     const size = board.length
-    const rowWinner = rowScores
+    const rowWinner = rows
       .map(s => isLineWon(size, s, player1, player2))
       .filter(s => s !== undefined)
-    const colWinner = columnScores
+    const colWinner = cols
       .map(s => isLineWon(size, s, player1, player2))
       .filter(s => s !== undefined)
-    const diagFWinner = isLineWon(size, forwardDiagonal, player1, player2)
-    const diagBWinner = isLineWon(size, backwardDiagonal, player1, player2)
+    const diagFWinner = isLineWon(size, fdiag, player1, player2)
+    const diagBWinner = isLineWon(size, bdiag, player1, player2)
 
     const remainingSquares = board.reduce((acc, r) => {
       return acc + r.filter(c => c === free).length
@@ -110,8 +110,10 @@ export default class Game extends Component {
     const outcome = remainingSquares === 0 && winner === undefined ? draw : winner
 
     return {
-      outcome,
-      winner
+      result: {
+        outcome,
+        winner
+      }
     }
   }
 
@@ -124,7 +126,8 @@ export default class Game extends Component {
   }
 
   makeMove (x, y) {
-    const { board, currentPlayer, outcome } = this.state
+    const { board, result, currentPlayer } = this.state
+    const { outcome } = result
     if (outcome !== undefined) return
 
     const squareValue = board[y][x]
@@ -132,11 +135,10 @@ export default class Game extends Component {
     if (isSquareFree) {
       board[y][x] = isSquareFree ? currentPlayer : squareValue
       const scores = {
-        ...this.updateRowScores(x, y),
-        ...this.updateColumnScores(x, y),
+        ...this.updateMatrixScores(x, y),
         ...this.updateDiagonalScores()
       }
-      const result = this.updateWinner(scores)
+      const result = this.updateResult(scores)
       const nextPlayer = this.toggleTurn()
       this.setState((state, props) => {
         return {
@@ -153,7 +155,8 @@ export default class Game extends Component {
   }
 
   render () {
-    const { board, outcome, winner, currentPlayer } = this.state
+    const { board, result, currentPlayer } = this.state
+    const { outcome, winner } = result
     const playerComp = currentPlayer === player1 ? <PlayerX /> : <PlayerO />
     const turnComp = outcome === undefined && <Turn player={playerComp} />
     const winnerComp = winner && <h1>Winner: {winner === player1 ? 'X' : 'O'}</h1>
@@ -162,7 +165,7 @@ export default class Game extends Component {
     const next = `/play/${board.length}`
     const replayButton = (
       <Link replace className='button primary animated' to={next}>
-        <i className='fa fa-repeat' aria-hidden='true' /> Rematch
+        Rematch
       </Link>
     )
     const quitButton = <Link replace className='button secondary' to='/quit'>Quit</Link>
